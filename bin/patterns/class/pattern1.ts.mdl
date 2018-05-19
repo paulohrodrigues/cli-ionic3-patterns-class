@@ -1,0 +1,4 @@
+class {{nameclass}} {{nameextends}} {{nameinterface}}{
+    constructor(){   
+    }
+}

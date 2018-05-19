@@ -1,6 +1,6 @@
 'use strict';
 module.exports = class FilterClass {
-    constructor(code,argumentsArray){
+    constructor(code,filesName,argumentsArray){
     
         this.caracterValid = {
             "extends":false,
@@ -15,18 +15,23 @@ module.exports = class FilterClass {
         this.code           = code;
         this.argumentsArray = argumentsArray; 
 
-        this.patters = [
-            "pattern1"
-        ];
+        this.patters = filesName;
 
-        this.initValidate(argumentsArray);
+        this.validateInit = this.initValidate(argumentsArray);
     }
 
     initValidate(argumentsArray){
-        if(argumentsArray.length<3 || argumentsArray[2].split("=")[0]!=="model") throw "Algum(s) dos 3 primeiros parametros é/são inválido(s)";
-        if(this.patters.indexOf(argumentsArray[2].split("=")[1]) ==-1 ) throw "Padrão "+argumentsArray[2].split("=")[1]+" não encontrado";
-    }
 
+        if(argumentsArray.length<3 || argumentsArray[2].split("=")[0]!=="model"){
+            console.log("Algum(s) dos 3 primeiros parametros é/são inválido(s)");
+            return false; 
+        }
+        if(this.patters.indexOf(argumentsArray[2].split("=")[1]) ==-1 ){ 
+            console.log("Padrão "+argumentsArray[2].split("=")[1]+" não encontrado");
+            return false; 
+        }
+        return true;
+    }
 
     isPattern(value){
         let array = value.split("=");
@@ -65,14 +70,13 @@ module.exports = class FilterClass {
         return codeFilter;
     }
 
-
-
     filter(){
         var codeFilter=this.code;
-        codeFilter = codeFilter.replace("{{nameclass}}",this.argumentsArray[1]);
-        codeFilter = this.process(codeFilter);
-        codeFilter = this.processAuto(codeFilter);
-
+        if(this.validateInit===true){
+            codeFilter = codeFilter.replace("{{nameclass}}",this.argumentsArray[1]);
+            codeFilter = this.process(codeFilter);
+            codeFilter = this.processAuto(codeFilter);
+        }
         return codeFilter;
     }
 }

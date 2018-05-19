@@ -1,4 +1,4 @@
 class {{nameclass}} {{nameextends}} {{nameinterface}}{
-    constructor(){   
+    constructor(teste:number){   
     }
 }
